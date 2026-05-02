@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Dashboard Psicóloga</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+body{background:#f5f3ff;min-height:100vh;padding-bottom:72px}
+:root{--p:#3C3489;--pm:#7F77DD;--pb:#EEEDFE;--pbr:#AFA9EC}
+.page{display:none;padding:20px 16px 0}
+.page.active{display:block}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--pbr);display:flex;z-index:100}
+nav button{flex:1;border:none;background:none;padding:10px 0 8px;color:#999;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px}
+nav button.active{color:var(--p);font-weight:600}
+nav button span.ic{font-size:20px}
+.card{background:#fff;border:.5px solid var(--pbr);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.card.lilac{background:var(--pb)}
+.sec{font-size:13px;font-weight:600;color:var(--p);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.page-title{font-size:18px;font-weight:600;color:var(--p);margin-bottom:16px}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.btn-primary{background:var(--p);color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:13px;cursor:pointer}
+.btn-sm{border:.5px solid var(--pbr);background:none;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;color:var(--p)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.metric{background:var(--pb);border-radius:12px;padding:12px 14px}
+.metric .label{font-size:11px;color:var(--pm);margin-bottom:4px}
+.metric .val{font-size:18px;font-weight:600;color:var(--p)}
+input,select,textarea{width:100%;border:1px solid var(--pbr);border-radius:8px;padding:8px 10px;font-size:14px;background:#fff;outline:none}
+input:focus,select:focus{border-color:var(--pm)}
+.field{margin-bottom:10px}
+.field label{font-size:12px;color:var(--pm);display:block;margin-bottom:4px}
+.btn-full{width:100%;background:var(--p);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;cursor:pointer;margin-top:4px}
+.appt-row{display:flex;align-items:center;gap:8px;background:#fff;border:.5px solid var(--pbr);border-radius:10px;padding:8px 12px;margin-bottom:4px}
+.time-badge{background:var(--pm);color:#fff;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:600;min-width:40px;text-align:center}
+.exp-row{display:flex;align-items:center;gap:10px;background:#fff;border:.5px solid var(--pbr);border-radius:12px;padding:10px 14px;margin-bottom:8px}
+.pill{background:var(--pb);color:var(--p);font-size:12px;padding:2px 10px;border-radius:20px;border:.5px solid var(--pbr);display:inline-block;margin:2px 2px 0 0}
+.week-nav{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.week-nav button{border:.5px solid var(--pbr);background:none;border-radius:8px;padding:4px 12px;cursor:pointer;color:var(--p);font-size:16px}
+.week-nav .label{flex:1;text-align:center;font-size:13px;color:var(--p);font-weight:500}
+.day-label{font-size:12px;font-weight:600;color:var(--pm);margin-bottom:4px;padding:3px 8px;border-radius:6px;display:inline-block}
+.day-label.today{background:var(--pb);color:var(--p)}
+.empty{color:#ccc;font-size:12px;padding-left:8px;margin-bottom:4px}
+.badge-status{font-size:12px;padding:2px 10px;border-radius:20px}
+.active-badge{background:#e6f9ef;color:#1a7a4a}
+.inactive-badge{background:#f5f5f5;color:#999}
+.del-btn{border:none;background:none;color:#ccc;font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0}
+.cat-pills{margin-top:10px;display:flex;flex-wrap:wrap;gap:4px}
+.period-filter{display:flex;gap:8px;margin-bottom:14px}
+.period-filter select{flex:1;padding:7px 10px;font-size:13px}
+.green{color:#1a7a4a}
+.red{color:#c0392b}
+</style>
+</head>
+<body>
+
+<div id="home" class="page active">
+  <div style="margin-bottom:20px">
+    <div style="font-size:13px;color:#999" id="home-month"></div>
+    <div style="font-size:22px;font-weight:600;color:var(--p)">Olá! 👋</div>
+  </div>
+  <div class="grid2" id="home-metrics"></div>
+  <div class="sec">Hoje</div>
+  <div class="card" id="home-today"></div>
+  <div class="sec" id="home-week-title">Esta semana</div>
+  <div class="card" id="home-week"></div>
+</div>
+
+<div id="patients" class="page">
+  <div class="row">
+    <div class="page-title">Pacientes</div>
+    <button class="btn-primary" onclick="toggleForm('pform')">+ Novo</button>
+  </div>
+  <div id="pform" style="display:none">
+    <div class="card lilac">
+      <div class="field"><label>Nome completo</label><input id="p-name" placeholder="Nome da paciente"/></div>
+      <div class="field"><label>Telefone</label><input id="p-phone" type="tel" placeholder="(51) 9..."/></div>
+      <div class="field"><label>Valor da sessão (R$)</label><input id="p-value" type="number" placeholder="200"/></div>
+      <div class="field"><label>Sessões por mês</label>
+        <select id="p-freq"><option value="1">1x/mês</option><option value="2">2x/mês</option><option value="4" selected>4x/mês</option><option value="8">8x/mês</option></select>
+      </div>
+      <button class="btn-full" onclick="savePatient()">Cadastrar paciente</button>
+    </div>
+  </div>
+  <div id="patients-list"></div>
+</div>
+
+<div id="agenda" class="page">
+  <div class="row">
+    <div class="page-title">Agenda</div>
+    <button class="btn-primary" onclick="toggleForm('aform')">+ Agendar</button>
+  </div>
+  <div id="aform" style="display:none">
+    <div class="card lilac">
+      <div class="field"><label>Paciente</label><input id="a-patient" placeholder="Nome do paciente"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label>Data</label><input id="a-date" type="date"/></div>
+        <div class="field"><label>Horário</label><input id="a-time" type="time" value="09:00"/></div>
+      </div>
+      <div class="field"><label>Observações</label><input id="a-notes" placeholder="Opcional"/></div>
+      <button class="btn-full" onclick="saveAppt()">Confirmar agendamento</button>
+    </div>
+  </div>
+  <div class="week-nav">
+    <button onclick="changeWeek(-1)">‹</button>
+    <div class="label" id="week-label"></div>
+    <button onclick="changeWeek(1)">›</button>
+  </div>
+  <div id="agenda-list"></div>
+</div>
+
+<div id="expenses" class="page">
+  <div class="row">
+    <div class="page-title">Despesas</div>
+    <button class="btn-primary" onclick="toggleForm('eform')">+ Registrar</button>
+  </div>
+  <div id="eform" style="display:none">
+    <div class="card lilac">
+      <div class="field"><label>Descrição</label><input id="e-desc" placeholder="Ex: Aluguel sala"/></div>
+      <div class="field"><label>Categoria</label>
+        <select id="e-cat">
+          <option>Aluguel de sala</option><option>Material</option><option>Supervisão</option>
+          <option>Curso/formação</option><option>Transporte</option><option>Outros</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label>Data</label><input id="e-date" type="date"/></div>
+        <div class="field"><label>Valor (R$)</label><input id="e-value" type="number" placeholder="0"/></div>
+      </div>
+      <button class="btn-full" onclick="saveExpense()">Salvar despesa</button>
+    </div>
+  </div>
+  <div class="period-filter">
+    <select id="e-filter-month" onchange="renderExpenses()"></select>
+    <select id="e-filter-year" onchange="renderExpenses()" style="max-width:90px"></select>
+  </div>
+  <div class="card lilac" id="exp-summary"></div>
+  <div id="expenses-list" style="margin-top:12px"></div>
+</div>
+
+<nav>
+  <button class="active" onclick="goTo('home')" id="nav-home"><span class="ic">⊞</span>Início</button>
+  <button onclick="goTo('patients')" id="nav-patients"><span class="ic">♡</span>Pacientes</button>
+  <button onclick="goTo('agenda')" id="nav-agenda"><span class="ic">◷</span>Agenda</button>
+  <button onclick="goTo('expenses')" id="nav-expenses"><span class="ic">◈</span>Despesas</button>
+</nav>
+
+<script>
+const MONTHS = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const WDAYS = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+const now = new Date();
+let weekOffset = 0;
+
+function load(k){try{return JSON.parse(localStorage.getItem(k)||"[]")}catch{return[]}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function fmt(n){return Number(n).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function dateStr(d){return d.toISOString().slice(0,10)}
+function weekStart(d,offset){const c=new Date(d);c.setDate(c.getDate()-c.getDay()+offset*7);return c}
+
+function goTo(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+  document.getElementById("nav-"+page).classList.add("active");
+  if(page==="home")renderHome();
+  if(page==="patients")renderPatients();
+  if(page==="agenda")renderAgenda();
+  if(page==="expenses")renderExpenses();
+}
+
+function toggleForm(id){
+  const f=document.getElementById(id);
+  f.style.display=f.style.display==="none"?"block":"none";
+}
+
+// HOME
+function renderHome(){
+  const patients=load("patients");
+  const expenses=load("expenses");
+  const appts=load("appts");
+  const active=patients.filter(p=>p.active);
+  const revenue=active.reduce((s,p)=>s+Number(p.value)*(p.freq||4),0);
+  const m=now.getMonth(),y=now.getFullYear();
+  const monthExp=expenses.filter(e=>{const d=new Date(e.date+"T12:00:00");return d.getMonth()===m&&d.getFullYear()===y}).reduce((s,e)=>s+Number(e.value),0);
+  const net=revenue-monthExp;
+  document.getElementById("home-month").textContent=MONTHS[m]+" "+y;
+  document.getElementById("home-metrics").innerHTML=`
+    <div class="metric"><div class="label">Receita esperada</div><div class="val">${fmt(revenue)}</div></div>
+    <div class="metric"><div class="label">Despesas do mês</div><div class="val red">${fmt(monthExp)}</div></div>
+    <div class="metric"><div class="label">Resultado líquido</div><div class="val ${net>=0?"green":"red"}">${fmt(net)}</div></div>
+    <div class="metric"><div class="label">Pacientes ativos</div><div class="val">${active.length}</div></div>`;
+  const todayStr=dateStr(now);
+  const todayA=appts.filter(a=>a.date===todayStr).sort((a,b)=>a.time.localeCompare(b.time));
+  document.getElementById("home-today").innerHTML=todayA.length===0
+    ?'<div style="color:#aaa;font-size:14px;text-align:center;padding:8px 0">Sem atendimentos hoje</div>'
+    :todayA.map((a,i)=>`<div class="appt-row" style="border-bottom:${i<todayA.length-1?".5px solid var(--pbr)":"none"};border-radius:0;background:transparent;border-left:none;border-right:none;border-top:none">
+      <div class="time-badge">${a.time}</div><div style="font-size:14px;color:var(--p)">${a.patient}</div></div>`).join("");
+  const ws=weekStart(now,0);
+  const we=new Date(ws);we.setDate(ws.getDate()+6);
+  const weekA=appts.filter(a=>{const d=new Date(a.date+"T12:00:00");return d>=ws&&d<=we;});
+  document.getElementById("home-week-title").textContent=`Esta semana (${weekA.length} atendimentos)`;
+  if(weekA.length===0){document.getElementById("home-week").innerHTML='<div style="color:#aaa;font-size:14px;text-align:center;padding:8px 0">Nenhum atendimento</div>';return;}
+  const byDay={};weekA.forEach(a=>{if(!byDay[a.date])byDay[a.date]=[];byDay[a.date].push(a);});
+  document.getElementById("home-week").innerHTML=Object.keys(byDay).sort().map(date=>{
+    const d=new Date(date+"T12:00:00");
+    return`<div style="margin-bottom:8px"><div style="font-size:12px;color:var(--pm);font-weight:600;margin-bottom:4px">${WDAYS[d.getDay()]} ${d.getDate()}/${d.getMonth()+1}</div>
+    ${byDay[date].sort((a,b)=>a.time.localeCompare(b.time)).map(a=>`<div style="display:flex;gap:8px;font-size:13px;color:var(--p);margin-bottom:2px"><span style="color:var(--pm);min-width:38px">${a.time}</span><span>${a.patient}</span></div>`).join("")}</div>`;
+  }).join("");
+}
+
+// PATIENTS
+function savePatient(){
+  const name=document.getElementById("p-name").value.trim();
+  const value=document.getElementById("p-value").value;
+  if(!name||!value){alert("Preencha nome e valor.");return;}
+  const patients=load("patients");
+  patients.push({id:Date.now(),name,phone:document.getElementById("p-phone").value,value:Number(value),freq:Number(document.getElementById("p-freq").value),active:true});
+  save("patients",patients);
+  document.getElementById("p-name").value="";document.getElementById("p-phone").value="";document.getElementById("p-value").value="";
+  toggleForm("pform");renderPatients();
+}
+function toggleActive(id){
+  const p=load("patients");const i=p.findIndex(x=>x.id===id);if(i<0)return;
+  p[i].active=!p[i].active;save("patients",p);renderPatients();
+}
+function delPatient(id){if(!confirm("Remover paciente?"))return;save("patients",load("patients").filter(p=>p.id!==id));renderPatients();}
+function renderPatients(){
+  const patients=load("patients");
+  const el=document.getElementById("patients-list");
+  if(!patients.length){el.innerHTML='<div style="color:#aaa;text-align:center;padding:32px">Nenhum paciente cadastrado</div>';return;}
+  el.innerHTML=patients.map(p=>`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-weight:600;font-size:15px;color:var(--p)">${p.name}</div>
+        ${p.phone?`<div style="font-size:12px;color:#999;margin-top:2px">${p.phone}</div>`:""}
+        <div style="margin-top:6px">
+          <span class="pill">${fmt(p.value)}/sessão</span>
+          <span class="pill">${p.freq}x/mês</span>
+          <span class="badge-status ${p.active?"active-badge":"inactive-badge"}">${p.active?"Ativo":"Inativo"}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn-sm" onclick="toggleActive(${p.id})">${p.active?"Inativar":"Ativar"}</button>
+        <button class="btn-sm" style="color:#c0392b" onclick="delPatient(${p.id})">×</button>
+      </div>
+    </div>
+  </div>`).join("");
+}
+
+// AGENDA
+function renderAgenda(){
+  const appts=load("appts");
+  const ws=weekStart(now,weekOffset);
+  const days=Array.from({length:7},(_,i)=>{const d=new Date(ws);d.setDate(ws.getDate()+i);return d;});
+  document.getElementById("week-label").textContent=`${days[0].getDate()}/${days[0].getMonth()+1} – ${days[6].getDate()}/${days[6].getMonth()+1}/${days[6].getFullYear()}`;
+  const todayStr=dateStr(now);
+  document.getElementById("agenda-list").innerHTML=days.map(day=>{
+    const ds=dateStr(day);
+    const dayA=appts.filter(a=>a.date===ds).sort((a,b)=>a.time.localeCompare(b.time));
+    const isToday=ds===todayStr;
+    return`<div style="margin-bottom:8px">
+      <div class="day-label ${isToday?"today":""}">${WDAYS[day.getDay()]} ${day.getDate()}/${day.getMonth()+1}${isToday?" · Hoje":""}</div>
+      ${dayA.length===0?'<div class="empty">Sem atendimentos</div>':dayA.map(a=>`<div class="appt-row">
+        <div class="time-badge">${a.time}</div>
+        <div style="flex:1"><div style="font-size:14px;color:var(--p)">${a.patient}</div>${a.notes?`<div style="font-size:11px;color:#999">${a.notes}</div>`:""}</div>
+        <button class="del-btn" onclick="delAppt(${a.id})">×</button>
+      </div>`).join("")}
+    </div>`;
+  }).join("");
+}
+function changeWeek(d){weekOffset+=d;renderAgenda();}
+function saveAppt(){
+  const patient=document.getElementById("a-patient").value.trim();
+  const date=document.getElementById("a-date").value;
+  const time=document.getElementById("a-time").value;
+  if(!patient||!date||!time){alert("Preencha paciente, data e horário.");return;}
+  const appts=load("appts");
+  appts.push({id:Date.now(),patient,date,time,notes:document.getElementById("a-notes").value});
+  save("appts",appts);
+  document.getElementById("a-patient").value="";document.getElementById("a-notes").value="";
+  toggleForm("aform");renderAgenda();
+}
+function delAppt(id){if(!confirm("Remover agendamento?"))return;save("appts",load("appts").filter(a=>a.id!==id));renderAgenda();}
+
+// EXPENSES
+function initExpenseFilters(){
+  const ms=document.getElementById("e-filter-month");
+  const ys=document.getElementById("e-filter-year");
+  if(ms.options.length)return;
+  MONTHS.forEach((m,i)=>{const o=document.createElement("option");o.value=i;o.textContent=m;if(i===now.getMonth())o.selected=true;ms.appendChild(o);});
+  [now.getFullYear()-1,now.getFullYear(),now.getFullYear()+1].forEach(y=>{const o=document.createElement("option");o.value=y;o.textContent=y;if(y===now.getFullYear())o.selected=true;ys.appendChild(o);});
+}
+function renderExpenses(){
+  initExpenseFilters();
+  const expenses=load("expenses");
+  const m=Number(document.getElementById("e-filter-month").value);
+  const y=Number(document.getElementById("e-filter-year").value);
+  const filtered=expenses.filter(e=>{const d=new Date(e.date+"T12:00:00");return d.getMonth()===m&&d.getFullYear()===y;}).sort((a,b)=>b.date.localeCompare(a.date));
+  const total=filtered.reduce((s,e)=>s+Number(e.value),0);
+  const cats=["Aluguel de sala","Material","Supervisão","Curso/formação","Transporte","Outros"];
+  const byCat=cats.map(c=>({c,t:filtered.filter(e=>e.cat===c).reduce((s,e)=>s+Number(e.value),0)})).filter(x=>x.t>0);
+  document.getElementById("exp-summary").innerHTML=`<div style="font-size:12px;color:var(--pm)">Total do período</div>
+    <div style="font-size:22px;font-weight:600;color:var(--p)">${fmt(total)}</div>
+    ${byCat.length?`<div class="cat-pills">${byCat.map(x=>`<span class="pill">${x.c}: ${fmt(x.t)}</span>`).join("")}</div>`:""}`;
+  document.getElementById("expenses-list").innerHTML=filtered.length===0
+    ?'<div style="color:#aaa;text-align:center;padding:24px">Sem despesas neste período</div>'
+    :filtered.map(e=>`<div class="exp-row">
+      <div style="flex:1">
+        <div style="font-size:14px;color:var(--p)">${e.desc}</div>
+        <div style="font-size:11px;color:#aaa;margin-top:2px">${e.cat} · ${new Date(e.date+"T12:00:00").toLocaleDateString("pt-BR")}</div>
+      </div>
+      <div style="font-size:15px;font-weight:600;color:#c0392b">${fmt(e.value)}</div>
+      <button class="del-btn" onclick="delExpense(${e.id})">×</button>
+    </div>`).join("");
+}
+function saveExpense(){
+  const desc=document.getElementById("e-desc").value.trim();
+  const value=document.getElementById("e-value").value;
+  const date=document.getElementById("e-date").value;
+  if(!desc||!value||!date){alert("Preencha todos os campos.");return;}
+  const expenses=load("expenses");
+  expenses.push({id:Date.now(),desc,cat:document.getElementById("e-cat").value,date,value:Number(value)});
+  save("expenses",expenses);
+  document.getElementById("e-desc").value="";document.getElementById("e-value").value="";document.getElementById("e-date").value="";
+  toggleForm("eform");renderExpenses();
+}
+function delExpense(id){if(!confirm("Remover despesa?"))return;save("expenses",load("expenses").filter(e=>e.id!==id));renderExpenses();}
+
+// Init
+document.getElementById("a-date").value=dateStr(now);
+renderHome();
+initExpenseFilters();
+</script>
+</body>
+</html>
