@@ -22,7 +22,7 @@ nav button .ic{font-size:18px}
 .btn-primary{background:var(--p);color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:13px;cursor:pointer;white-space:nowrap}
 .btn-sm{border:.5px solid var(--pbr);background:none;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--p)}
 .btn-confirm{border:none;background:#e6f9ef;color:var(--g);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600}
-.btn-confirmed{border:none;background:#d0f0e0;color:var(--g);border-radius:6px;padding:4px 10px;font-size:11px;cursor:default;font-weight:600}
+.btn-unconfirm{border:none;background:#fce8e8;color:var(--r);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .metric{background:var(--pb);border-radius:12px;padding:12px 14px}
 .metric .lbl{font-size:11px;color:var(--pm);margin-bottom:4px}
@@ -35,54 +35,61 @@ input:focus,select:focus{border-color:var(--pm)}
 .pill{background:var(--pb);color:var(--p);font-size:11px;padding:2px 8px;border-radius:20px;border:.5px solid var(--pbr);display:inline-block;margin:2px 2px 0 0}
 .pill.green{background:#e6f9ef;color:var(--g);border-color:#9fe1cb}
 .pill.red{background:#fce8e8;color:var(--r);border-color:#f09595}
+.pill.blue{background:#e6f1fb;color:#185fa5;border-color:#85b7eb}
 .del-btn{border:none;background:none;color:#ccc;font-size:18px;cursor:pointer;padding:0 2px;flex-shrink:0}
 .green{color:var(--g)}.red{color:var(--r)}
 
-/* Autocomplete */
 .autocomplete-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--pbr);border-radius:8px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .autocomplete-item{padding:9px 12px;font-size:14px;cursor:pointer;color:var(--p)}
 .autocomplete-item:hover{background:var(--pb)}
 
-/* Day nav */
 .day-nav{display:flex;align-items:center;gap:8px;margin-bottom:16px}
 .day-nav button{border:.5px solid var(--pbr);background:none;border-radius:8px;padding:4px 14px;cursor:pointer;color:var(--p);font-size:18px;line-height:1}
 .day-nav .day-info{flex:1;text-align:center}
 .day-nav .day-name{font-size:16px;font-weight:600;color:var(--p)}
 .day-nav .day-date{font-size:12px;color:var(--pm)}
 
-/* Appointment card */
-.appt-card{background:#fff;border:.5px solid var(--pbr);border-radius:12px;padding:0;margin-bottom:10px;overflow:hidden}
+/* Timeline */
+.timeline{position:relative}
+.hour-slot{display:flex;align-items:flex-start;min-height:52px;border-bottom:.5px solid #f0eeff;padding:4px 0}
+.hour-slot:last-child{border-bottom:none}
+.hour-label{font-size:11px;color:var(--pm);min-width:40px;padding-top:2px;flex-shrink:0}
+.hour-content{flex:1;padding-left:8px}
+.appt-card{background:#fff;border:.5px solid var(--pbr);border-radius:12px;padding:0;margin-bottom:6px;overflow:hidden}
 .appt-header{background:var(--pb);padding:8px 12px;display:flex;align-items:center;gap:10px}
 .appt-time{background:var(--p);color:#fff;border-radius:6px;padding:4px 10px;font-size:13px;font-weight:600;min-width:48px;text-align:center}
 .appt-patient{font-size:15px;font-weight:600;color:var(--p);flex:1}
-.appt-body{padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.appt-body{padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .appt-type{font-size:12px;color:var(--pm)}
 .appt-value{font-size:13px;font-weight:600;color:var(--p)}
 .appt-actions{display:flex;gap:6px;align-items:center}
 
-/* Period filter */
 .period-filter{display:flex;gap:8px;margin-bottom:14px}
 .period-filter select{flex:1;padding:7px 10px;font-size:13px}
 
-/* Report */
+/* Month selector on home */
+.month-selector{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.month-selector select{flex:1;border:.5px solid var(--pbr);border-radius:8px;padding:6px 10px;font-size:13px;background:#fff}
+.month-selector button{border:.5px solid var(--pbr);background:none;border-radius:8px;padding:4px 12px;cursor:pointer;color:var(--p);font-size:16px}
+
 .report-patient{background:#fff;border:.5px solid var(--pbr);border-radius:12px;margin-bottom:10px;overflow:hidden}
 .report-header{background:var(--pb);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .report-body{padding:10px 14px;border-top:.5px solid var(--pbr)}
 .session-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:.5px solid #f0eeff;color:var(--p)}
 .session-row:last-child{border:none}
-
-/* No appts */
-.empty-day{text-align:center;padding:40px 16px;color:#bbb}
-.empty-day .ic{font-size:36px;margin-bottom:8px}
 </style>
 </head>
 <body>
 
 <!-- HOME -->
 <div id="home" class="page active">
-  <div style="margin-bottom:20px">
-    <div style="font-size:13px;color:#999" id="home-month"></div>
+  <div style="margin-bottom:12px">
     <div style="font-size:22px;font-weight:600;color:var(--p)">Olá! 👋</div>
+  </div>
+  <div class="month-selector">
+    <button onclick="changeHomeMonth(-1)">‹</button>
+    <select id="home-month-sel" onchange="renderHome()"></select>
+    <button onclick="changeHomeMonth(1)">›</button>
   </div>
   <div class="grid2" id="home-metrics"></div>
   <div class="sec">Hoje</div>
@@ -135,11 +142,19 @@ input:focus,select:focus{border-color:var(--pm)}
         <input id="a-patient" placeholder="Digite o nome..." autocomplete="off" oninput="filterPatients()" onblur="hideAC()"/>
         <div class="autocomplete-list" id="ac-list" style="display:none"></div>
       </div>
-      <div class="field"><label>Tipo</label>
-        <select id="a-type">
-          <option value="Psicoterapia">Psicoterapia</option>
-          <option value="Avaliação Neuropsicológica">Avaliação Neuropsicológica</option>
-        </select>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label>Tipo</label>
+          <select id="a-type">
+            <option value="Psicoterapia">Psicoterapia</option>
+            <option value="Avaliação Neuropsicológica">Avaliação Neuro.</option>
+          </select>
+        </div>
+        <div class="field"><label>Modalidade</label>
+          <select id="a-mode">
+            <option value="Presencial">Presencial</option>
+            <option value="Virtual">Virtual</option>
+          </select>
+        </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="field"><label>Data</label><input id="a-date" type="date"/></div>
@@ -189,9 +204,7 @@ input:focus,select:focus{border-color:var(--pm)}
 
 <!-- REPORTS -->
 <div id="reports" class="page">
-  <div class="row">
-    <div class="page-title">Relatórios</div>
-  </div>
+  <div class="row"><div class="page-title">Relatórios</div></div>
   <div class="period-filter">
     <select id="r-filter-month" onchange="renderReports()"></select>
     <select id="r-filter-year" onchange="renderReports()" style="max-width:90px"></select>
@@ -212,14 +225,40 @@ input:focus,select:focus{border-color:var(--pm)}
 <script>
 const MONTHS=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const WDAYS=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+const HOURS=Array.from({length:15},(_,i)=>i+7); // 7 to 21
 const now=new Date();
 let dayOffset=0;
+let homeMonth=now.getMonth();
+let homeYear=now.getFullYear();
 
 function ld(k){try{return JSON.parse(localStorage.getItem("psico_"+k)||"[]")}catch{return[]}}
 function sv(k,v){localStorage.setItem("psico_"+k,JSON.stringify(v))}
 function fmt(n){return Number(n).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
 function dateStr(d){return d.toISOString().slice(0,10)}
 function currentDay(){const d=new Date(now);d.setDate(d.getDate()+dayOffset);return d}
+
+// Home month selector init
+function initHomeMonthSel(){
+  const sel=document.getElementById("home-month-sel");
+  if(sel.options.length)return;
+  for(let y=now.getFullYear()-1;y<=now.getFullYear()+1;y++){
+    MONTHS.forEach((m,i)=>{
+      const o=document.createElement("option");
+      o.value=y+"-"+i;
+      o.textContent=m+" "+y;
+      if(i===now.getMonth()&&y===now.getFullYear())o.selected=true;
+      sel.appendChild(o);
+    });
+  }
+}
+function changeHomeMonth(d){
+  homeMonth+=d;
+  if(homeMonth>11){homeMonth=0;homeYear++;}
+  if(homeMonth<0){homeMonth=11;homeYear--;}
+  const sel=document.getElementById("home-month-sel");
+  sel.value=homeYear+"-"+homeMonth;
+  renderHome();
+}
 
 function goTo(page){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
@@ -240,27 +279,26 @@ function toggleForm(id){
 
 // HOME
 function renderHome(){
+  initHomeMonthSel();
+  const sel=document.getElementById("home-month-sel");
+  if(sel.value){const parts=sel.value.split("-");homeYear=Number(parts[0]);homeMonth=Number(parts[1]);}
   const patients=ld("patients");
   const expenses=ld("expenses");
   const appts=ld("appts");
-  const m=now.getMonth(),y=now.getFullYear();
+  const m=homeMonth,y=homeYear;
   const active=patients.filter(p=>p.active);
 
-  // Revenue = only confirmed sessions this month
   const confirmedRev=appts.filter(a=>{
     const d=new Date(a.date+"T12:00:00");
     return a.confirmed&&d.getMonth()===m&&d.getFullYear()===y;
   }).reduce((s,a)=>s+Number(a.value||0),0);
 
-  // Expected = recorrente patients * sessions
   const expectedRev=active.filter(p=>p.type!=="avaliacao").reduce((s,p)=>s+Number(p.value)*(p.freq||4),0);
-
   const monthExp=expenses.filter(e=>{const d=new Date(e.date+"T12:00:00");return d.getMonth()===m&&d.getFullYear()===y}).reduce((s,e)=>s+Number(e.value),0);
   const net=confirmedRev-monthExp;
 
-  document.getElementById("home-month").textContent=MONTHS[m]+" "+y;
   document.getElementById("home-metrics").innerHTML=`
-    <div class="metric"><div class="lbl">Recebido (confirmado)</div><div class="val green">${fmt(confirmedRev)}</div></div>
+    <div class="metric"><div class="lbl">Realizado no mês</div><div class="val green">${fmt(confirmedRev)}</div></div>
     <div class="metric"><div class="lbl">Esperado no mês</div><div class="val">${fmt(expectedRev)}</div></div>
     <div class="metric"><div class="lbl">Despesas do mês</div><div class="val red">${fmt(monthExp)}</div></div>
     <div class="metric"><div class="lbl">Resultado líquido</div><div class="val ${net>=0?"green":"red"}">${fmt(net)}</div></div>`;
@@ -273,11 +311,10 @@ function renderHome(){
   } else {
     todayEl.innerHTML=todayA.map(a=>`<div class="appt-card">
       <div class="appt-header"><div class="appt-time">${a.time}</div><div class="appt-patient">${a.patient}</div>${a.confirmed?'<span class="pill green">✓ Realizada</span>':''}</div>
-      <div class="appt-body"><span class="appt-type">${a.type||"Psicoterapia"}</span><span class="appt-value">${a.value?fmt(a.value):""}</span></div>
+      <div class="appt-body"><span class="appt-type">${a.type||"Psicoterapia"}${a.mode?" · "+a.mode:""}</span><span class="appt-value">${a.value?fmt(a.value):""}</span></div>
     </div>`).join("");
   }
 
-  // Week summary
   const ws=new Date(now);ws.setDate(ws.getDate()-ws.getDay());
   const we=new Date(ws);we.setDate(ws.getDate()+6);
   const weekA=appts.filter(a=>{const d=new Date(a.date+"T12:00:00");return d>=ws&&d<=we});
@@ -304,13 +341,8 @@ function savePatient(){
   if(!name){alert("Informe o nome.");return;}
   const type=document.getElementById("p-type").value;
   let value,freq;
-  if(type==="avaliacao"){
-    value=document.getElementById("p-value-av").value;
-    freq=1;
-  } else {
-    value=document.getElementById("p-value").value;
-    freq=Number(document.getElementById("p-freq").value);
-  }
+  if(type==="avaliacao"){value=document.getElementById("p-value-av").value;freq=1;}
+  else{value=document.getElementById("p-value").value;freq=Number(document.getElementById("p-freq").value);}
   if(!value){alert("Informe o valor.");return;}
   const patients=ld("patients");
   patients.push({id:Date.now(),name,phone:document.getElementById("p-phone").value,type,value:Number(value),freq,active:true});
@@ -361,12 +393,11 @@ function selectPatient(name,value,type){
   document.getElementById("a-patient").value=name;
   document.getElementById("a-type").value=type==="avaliacao"?"Avaliação Neuropsicológica":"Psicoterapia";
   document.getElementById("ac-list").style.display="none";
-  // store value for this appointment
   document.getElementById("a-patient").dataset.value=value;
 }
 function hideAC(){setTimeout(()=>{document.getElementById("ac-list").style.display="none"},150)}
 
-// AGENDA — render
+// AGENDA — timeline render
 function renderAgenda(){
   const d=currentDay();
   const ds=dateStr(d);
@@ -374,48 +405,73 @@ function renderAgenda(){
   const isToday=ds===todayStr;
   document.getElementById("day-name").textContent=isToday?"Hoje — "+WDAYS[d.getDay()]:WDAYS[d.getDay()];
   document.getElementById("day-date").textContent=`${d.getDate()} de ${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
-  const appts=ld("appts").filter(a=>a.date===ds).sort((a,b)=>a.time.localeCompare(b.time));
+  const appts=ld("appts").filter(a=>a.date===ds);
+  const byHour={};
+  appts.forEach(a=>{
+    const h=parseInt(a.time.split(":")[0]);
+    if(!byHour[h])byHour[h]=[];
+    byHour[h].push(a);
+  });
   const el=document.getElementById("agenda-list");
-  if(!appts.length){
-    el.innerHTML=`<div class="empty-day"><div class="ic">📅</div><div>Nenhum agendamento<br>para este dia</div></div>`;return;
-  }
-  el.innerHTML=appts.map(a=>`<div class="appt-card" id="appt-${a.id}">
-    <div class="appt-header">
-      <div class="appt-time">${a.time}</div>
-      <div class="appt-patient">${a.patient}</div>
-      ${a.confirmed?'<span class="pill green">✓ Realizada</span>':''}
-    </div>
-    <div class="appt-body">
-      <div>
-        <div class="appt-type">${a.type||"Psicoterapia"}</div>
-        ${a.notes?`<div style="font-size:11px;color:#aaa;margin-top:2px">${a.notes}</div>`:""}
-      </div>
-      <div class="appt-value">${a.value?fmt(a.value):""}</div>
-      <div class="appt-actions">
-        ${!a.confirmed?`<button class="btn-confirm" onclick="confirmAppt(${a.id})">✓ Confirmar</button>`:`<button class="btn-confirmed">✓ Confirmada</button>`}
-        <button class="del-btn" onclick="delAppt(${a.id})">×</button>
-      </div>
-    </div>
-  </div>`).join("");
+  el.innerHTML=`<div class="timeline">${HOURS.map(h=>{
+    const hStr=String(h).padStart(2,"0")+":00";
+    const slots=byHour[h]||[];
+    const slotsHtml=slots.sort((a,b)=>a.time.localeCompare(b.time)).map(a=>`
+      <div class="appt-card">
+        <div class="appt-header">
+          <div class="appt-time">${a.time}</div>
+          <div class="appt-patient">${a.patient}</div>
+          ${a.confirmed?'<span class="pill green">✓ Realizada</span>':''}
+        </div>
+        <div class="appt-body">
+          <div>
+            <div class="appt-type">${a.type||"Psicoterapia"}</div>
+            <div style="margin-top:2px">${a.mode?`<span class="pill ${a.mode==="Virtual"?"blue":""}">${a.mode}</span>`:""}</div>
+            ${a.notes?`<div style="font-size:11px;color:#aaa;margin-top:2px">${a.notes}</div>`:""}
+          </div>
+          <div style="text-align:right">
+            <div class="appt-value">${a.value?fmt(a.value):""}</div>
+            <div class="appt-actions" style="margin-top:4px">
+              ${!a.confirmed
+                ?`<button class="btn-confirm" onclick="confirmAppt(${a.id})">✓ Confirmar</button>`
+                :`<button class="btn-unconfirm" onclick="unconfirmAppt(${a.id})">↩ Desfazer</button>`}
+              <button class="del-btn" onclick="delAppt(${a.id})">×</button>
+            </div>
+          </div>
+        </div>
+      </div>`).join("");
+    return`<div class="hour-slot">
+      <div class="hour-label">${hStr}</div>
+      <div class="hour-content">${slotsHtml}</div>
+    </div>`;
+  }).join("")}</div>`;
 }
 function changeDay(d){dayOffset+=d;renderAgenda();}
 function confirmAppt(id){
   const appts=ld("appts");
   const i=appts.findIndex(a=>a.id===id);if(i<0)return;
-  appts[i].confirmed=true;
-  sv("appts",appts);renderAgenda();
+  appts[i].confirmed=true;sv("appts",appts);renderAgenda();
+}
+function unconfirmAppt(id){
+  if(!confirm("Desfazer confirmação desta sessão?"))return;
+  const appts=ld("appts");
+  const i=appts.findIndex(a=>a.id===id);if(i<0)return;
+  appts[i].confirmed=false;sv("appts",appts);renderAgenda();
 }
 function saveAppt(){
   const patient=document.getElementById("a-patient").value.trim();
   const date=document.getElementById("a-date").value;
   const time=document.getElementById("a-time").value;
   if(!patient||!date||!time){alert("Preencha paciente, data e horário.");return;}
-  // find patient value
   const patients=ld("patients");
   const pat=patients.find(p=>p.name.toLowerCase()===patient.toLowerCase());
   const value=pat?pat.value:(document.getElementById("a-patient").dataset.value||0);
   const appts=ld("appts");
-  appts.push({id:Date.now(),patient,date,time,type:document.getElementById("a-type").value,notes:document.getElementById("a-notes").value,value:Number(value),confirmed:false});
+  appts.push({id:Date.now(),patient,date,time,
+    type:document.getElementById("a-type").value,
+    mode:document.getElementById("a-mode").value,
+    notes:document.getElementById("a-notes").value,
+    value:Number(value),confirmed:false});
   sv("appts",appts);
   document.getElementById("a-patient").value="";document.getElementById("a-notes").value="";
   document.getElementById("a-patient").dataset.value="";
@@ -424,9 +480,8 @@ function saveAppt(){
 function delAppt(id){if(!confirm("Remover agendamento?"))return;sv("appts",ld("appts").filter(a=>a.id!==id));renderAgenda();}
 
 // EXPENSES
-function initFilters(mId,yId,cb){
-  const ms=document.getElementById(mId);
-  const ys=document.getElementById(yId);
+function initFilters(mId,yId){
+  const ms=document.getElementById(mId);const ys=document.getElementById(yId);
   if(ms.options.length)return;
   MONTHS.forEach((m,i)=>{const o=document.createElement("option");o.value=i;o.textContent=m;if(i===now.getMonth())o.selected=true;ms.appendChild(o);});
   [now.getFullYear()-1,now.getFullYear(),now.getFullYear()+1].forEach(y=>{const o=document.createElement("option");o.value=y;o.textContent=y;if(y===now.getFullYear())o.selected=true;ys.appendChild(o);});
@@ -472,32 +527,24 @@ function renderReports(){
   const appts=ld("appts").filter(a=>{const d=new Date(a.date+"T12:00:00");return d.getMonth()===m&&d.getFullYear()===y});
   const confirmed=appts.filter(a=>a.confirmed);
   const totalRec=confirmed.reduce((s,a)=>s+Number(a.value||0),0);
-  const totalSess=confirmed.length;
   const patients=ld("patients");
-
   document.getElementById("report-summary").innerHTML=`
     <div class="grid2" style="margin-bottom:0">
-      <div><div style="font-size:11px;color:var(--pm)">Sessões realizadas</div><div style="font-size:20px;font-weight:600;color:var(--p)">${totalSess}</div></div>
-      <div><div style="font-size:11px;color:var(--pm)">Total recebido</div><div style="font-size:20px;font-weight:600;color:var(--g)">${fmt(totalRec)}</div></div>
+      <div><div style="font-size:11px;color:var(--pm)">Sessões realizadas</div><div style="font-size:20px;font-weight:600;color:var(--p)">${confirmed.length}</div></div>
+      <div><div style="font-size:11px;color:var(--pm)">Total realizado</div><div style="font-size:20px;font-weight:600;color:var(--g)">${fmt(totalRec)}</div></div>
     </div>`;
-
-  // Group by patient
   const byPat={};
-  confirmed.forEach(a=>{
-    if(!byPat[a.patient])byPat[a.patient]=[];
-    byPat[a.patient].push(a);
-  });
-
+  confirmed.forEach(a=>{if(!byPat[a.patient])byPat[a.patient]=[];byPat[a.patient].push(a);});
   const el=document.getElementById("report-list");
   if(!Object.keys(byPat).length){el.innerHTML='<div style="color:#aaa;text-align:center;padding:24px">Sem sessões confirmadas neste período</div>';return;}
-
   el.innerHTML=Object.keys(byPat).sort().map(name=>{
     const sessions=byPat[name].sort((a,b)=>a.date.localeCompare(b.date));
     const total=sessions.reduce((s,a)=>s+Number(a.value||0),0);
     const pat=patients.find(p=>p.name===name);
     const expected=pat&&pat.type!=="avaliacao"?Number(pat.value)*(pat.freq||4):null;
+    const sid="rep_"+name.replace(/\W/g,"_");
     return`<div class="report-patient">
-      <div class="report-header" onclick="toggleReport('rep-${name.replace(/\s/g,'_')}')">
+      <div class="report-header" onclick="toggleReport('${sid}')">
         <div>
           <div style="font-weight:600;font-size:14px;color:var(--p)">${name}</div>
           <div style="font-size:12px;color:var(--pm);margin-top:2px">${sessions.length} sessão(ões) · ${fmt(total)}</div>
@@ -507,10 +554,10 @@ function renderReports(){
           <div style="font-size:18px;color:var(--pm);margin-top:4px">›</div>
         </div>
       </div>
-      <div class="report-body" id="rep-${name.replace(/\s/g,'_')}" style="display:none">
+      <div class="report-body" id="${sid}" style="display:none">
         ${sessions.map(s=>`<div class="session-row">
           <span>${new Date(s.date+"T12:00:00").toLocaleDateString("pt-BR")} ${s.time}</span>
-          <span>${s.type||"Psicoterapia"}</span>
+          <span>${s.mode||""}</span>
           <span style="font-weight:600">${fmt(s.value||0)}</span>
         </div>`).join("")}
         <div style="margin-top:8px;padding-top:8px;border-top:.5px solid #f0eeff;display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--p)">
@@ -528,6 +575,7 @@ function toggleReport(id){
 // Init
 document.getElementById("a-date").value=dateStr(now);
 document.getElementById("e-date").value=dateStr(now);
+initHomeMonthSel();
 renderHome();
 </script>
 </body>
