@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
@@ -24,6 +25,7 @@ nav button .ic{font-size:18px}
 .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .btn-primary{background:var(--p);color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:13px;cursor:pointer;white-space:nowrap}
 .btn-sm{border:.5px solid var(--pbr);background:none;border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--p)}
+.btn-edit{border:none;background:#e8e6ff;color:var(--p);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-weight:500}
 .btn-confirm{border:none;background:#e6f9ef;color:var(--g);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600}
 .btn-unconfirm{border:none;background:#fce8e8;color:var(--r);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
@@ -35,10 +37,12 @@ input:focus,select:focus{border-color:var(--pm)}
 .field{margin-bottom:10px;position:relative}
 .field label{font-size:12px;color:var(--pm);display:block;margin-bottom:4px}
 .btn-full{width:100%;background:var(--p);color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;cursor:pointer;margin-top:4px}
+.btn-full.secondary{background:#fff;color:var(--p);border:1px solid var(--pbr)}
 .pill{background:var(--pb);color:var(--p);font-size:11px;padding:2px 8px;border-radius:20px;border:.5px solid var(--pbr);display:inline-block;margin:2px 2px 0 0}
 .pill.green{background:#e6f9ef;color:var(--g);border-color:#9fe1cb}
 .pill.red{background:#fce8e8;color:var(--r);border-color:#f09595}
 .pill.blue{background:#e6f1fb;color:#185fa5;border-color:#85b7eb}
+.pill.orange{background:#fff3e0;color:#e65100;border-color:#ffcc80}
 .del-btn{border:none;background:none;color:#ccc;font-size:18px;cursor:pointer;padding:0 2px;flex-shrink:0}
 .green{color:var(--g)}.red{color:var(--r)}
 .autocomplete-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--pbr);border-radius:8px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,.08)}
@@ -58,8 +62,6 @@ input:focus,select:focus{border-color:var(--pm)}
 .appt-time{background:var(--p);color:#fff;border-radius:6px;padding:4px 10px;font-size:13px;font-weight:600;min-width:48px;text-align:center}
 .appt-patient{font-size:15px;font-weight:600;color:var(--p);flex:1}
 .appt-body{padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.appt-type{font-size:12px;color:var(--pm)}
-.appt-value{font-size:13px;font-weight:600;color:var(--p)}
 .appt-actions{display:flex;gap:6px;align-items:center}
 .period-filter{display:flex;gap:8px;margin-bottom:14px}
 .period-filter select{flex:1;padding:7px 10px;font-size:13px}
@@ -71,8 +73,6 @@ input:focus,select:focus{border-color:var(--pm)}
 .report-body{padding:10px 14px;border-top:.5px solid var(--pbr)}
 .session-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:.5px solid #f0eeff;color:var(--p)}
 .session-row:last-child{border:none}
-
-/* Login screen */
 #login-screen{position:fixed;inset:0;background:var(--pb);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:20px;padding:32px}
 #login-screen h1{font-size:24px;font-weight:700;color:var(--p);text-align:center}
 #login-screen p{font-size:14px;color:var(--pm);text-align:center}
@@ -80,17 +80,16 @@ input:focus,select:focus{border-color:var(--pm)}
 .btn-google img{width:22px;height:22px}
 #access-denied{position:fixed;inset:0;background:var(--pb);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px;padding:32px}
 #access-denied h2{font-size:20px;font-weight:700;color:var(--r);text-align:center}
-#access-denied p{font-size:14px;color:#666;text-align:center}
-
-/* Loading */
 #loading{position:fixed;inset:0;background:var(--pb);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:998;gap:12px}
 #loading .spinner{width:36px;height:36px;border:3px solid var(--pbr);border-top-color:var(--p);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* room rent field */
+.rent-box{background:#fff3e0;border:.5px solid #ffcc80;border-radius:10px;padding:10px 12px;margin-top:8px}
+.rent-box label{font-size:12px;color:#e65100;display:block;margin-bottom:4px;font-weight:500}
 </style>
 </head>
 <body>
 
-<!-- Login -->
 <div id="login-screen">
   <div style="font-size:48px">💜</div>
   <h1>Dashboard Psicóloga</h1>
@@ -101,18 +100,17 @@ input:focus,select:focus{border-color:var(--pm)}
   </button>
 </div>
 
-<!-- Acesso negado -->
-<div id="access-denied">
+<div id="access-denied" style="display:none">
   <div style="font-size:48px">🔒</div>
   <h2>Acesso não autorizado</h2>
   <p>Este e-mail não tem permissão para acessar o sistema.</p>
   <button class="btn-google" onclick="doLogout()">Sair e tentar outro e-mail</button>
 </div>
 
-<!-- Loading -->
 <div id="loading"><div class="spinner"></div><div style="color:var(--p);font-size:14px">Carregando dados...</div></div>
 
 <!-- HOME -->
+
 <div id="home" class="page">
   <div style="margin-bottom:12px">
     <div style="font-size:22px;font-weight:600;color:var(--p)">Olá! 👋</div>
@@ -134,13 +132,17 @@ input:focus,select:focus{border-color:var(--pm)}
 </div>
 
 <!-- PATIENTS -->
+
 <div id="patients" class="page">
   <div class="row">
     <div class="page-title">Pacientes</div>
-    <button class="btn-primary" onclick="toggleForm('pform')">+ Novo</button>
+    <button class="btn-primary" onclick="openPatientForm(null)">+ Novo</button>
   </div>
+  <!-- Patient form -->
   <div id="pform" style="display:none">
     <div class="card lilac">
+      <div style="font-size:13px;font-weight:600;color:var(--p);margin-bottom:12px" id="pform-title">Novo paciente</div>
+      <input type="hidden" id="p-edit-id"/>
       <div class="field"><label>Nome completo</label><input id="p-name" placeholder="Nome da paciente"/></div>
       <div class="field"><label>Telefone</label><input id="p-phone" type="tel" placeholder="(51) 9..."/></div>
       <div class="field"><label>Tipo de atendimento</label>
@@ -158,13 +160,15 @@ input:focus,select:focus{border-color:var(--pm)}
       <div id="p-avaliacao-fields" style="display:none">
         <div class="field"><label>Valor total da avaliação (R$)</label><input id="p-value-av" type="number" placeholder="1500"/></div>
       </div>
-      <button class="btn-full" onclick="savePatient()">Cadastrar paciente</button>
+      <button class="btn-full" id="pform-btn" onclick="savePatient()">Cadastrar paciente</button>
+      <button class="btn-full secondary" style="margin-top:6px" onclick="closePatientForm()">Cancelar</button>
     </div>
   </div>
   <div id="patients-list"></div>
 </div>
 
 <!-- AGENDA -->
+
 <div id="agenda" class="page">
   <div class="row">
     <div class="page-title">Agenda</div>
@@ -182,10 +186,19 @@ input:focus,select:focus{border-color:var(--pm)}
           <select id="a-type"><option value="Psicoterapia">Psicoterapia</option><option value="Avaliação Neuropsicológica">Avaliação Neuro.</option></select>
         </div>
         <div class="field"><label>Modalidade</label>
-          <select id="a-mode"><option value="Presencial">Presencial</option><option value="Virtual">Virtual</option></select>
+          <select id="a-mode" onchange="toggleRoomField()">
+            <option value="Presencial NH">Presencial NH</option>
+            <option value="Presencial POA">Presencial POA</option>
+            <option value="Virtual">Virtual</option>
+          </select>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <!-- Room rent -->
+      <div id="rent-field" class="rent-box">
+        <label>Aluguel da sala (R$) — opcional</label>
+        <input id="a-rent" type="number" placeholder="0" style="background:#fff3e0;border-color:#ffcc80"/>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
         <div class="field"><label>Data</label><input id="a-date" type="date"/></div>
         <div class="field"><label>Horário</label><input id="a-time" type="time" value="09:00"/></div>
       </div>
@@ -205,6 +218,7 @@ input:focus,select:focus{border-color:var(--pm)}
 </div>
 
 <!-- EXPENSES -->
+
 <div id="expenses" class="page">
   <div class="row">
     <div class="page-title">Despesas</div>
@@ -214,7 +228,7 @@ input:focus,select:focus{border-color:var(--pm)}
     <div class="card lilac">
       <div class="field"><label>Descrição</label><input id="e-desc" placeholder="Ex: Aluguel sala"/></div>
       <div class="field"><label>Categoria</label>
-        <select id="e-cat"><option>Aluguel de sala</option><option>Material</option><option>Supervisão</option><option>Curso/formação</option><option>Transporte</option><option>Outros</option></select>
+        <select id="e-cat"><option>Aluguel de sala NH</option><option>Aluguel de sala POA</option><option>Material</option><option>Supervisão</option><option>Curso/formação</option><option>Transporte</option><option>Outros</option></select>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="field"><label>Data</label><input id="e-date" type="date"/></div>
@@ -232,6 +246,7 @@ input:focus,select:focus{border-color:var(--pm)}
 </div>
 
 <!-- REPORTS -->
+
 <div id="reports" class="page">
   <div class="row"><div class="page-title">Relatórios</div></div>
   <div class="period-filter">
@@ -257,16 +272,7 @@ import{getFirestore,collection,doc,getDocs,addDoc,updateDoc,deleteDoc}from"https
 import{getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const ALLOWED_EMAILS=["santiagohenkel@gmail.com","henkeldaniela1972@gmail.com"];
-
-const firebaseConfig={
-  apiKey:"AIzaSyCo6cxpKO4j4ToYppkGV7gJnzc1RE-2mW8",
-  authDomain:"dashboard-psicologa.firebaseapp.com",
-  projectId:"dashboard-psicologa",
-  storageBucket:"dashboard-psicologa.firebasestorage.app",
-  messagingSenderId:"776138856103",
-  appId:"1:776138856103:web:7ce3b769b993b1ef69ad82"
-};
-
+const firebaseConfig={apiKey:"AIzaSyCo6cxpKO4j4ToYppkGV7gJnzc1RE-2mW8",authDomain:"dashboard-psicologa.firebaseapp.com",projectId:"dashboard-psicologa",storageBucket:"dashboard-psicologa.firebasestorage.app",messagingSenderId:"776138856103",appId:"1:776138856103:web:7ce3b769b993b1ef69ad82"};
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 const auth=getAuth(app);
@@ -282,37 +288,31 @@ let DB={patients:[],appts:[],expenses:[]};
 function fmt(n){return Number(n).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
 function dateStr(d){const z=s=>String(s).padStart(2,"0");return`${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`}
 function currentDay(){const d=new Date(now);d.setDate(d.getDate()+dayOffset);return d}
-
-function showLogin(){document.getElementById("login-screen").style.display="flex";}
-function hideLogin(){document.getElementById("login-screen").style.display="none";}
-function showDenied(){document.getElementById("access-denied").style.display="flex";}
 function showLoading(){document.getElementById("loading").style.display="flex";}
 function hideLoading(){document.getElementById("loading").style.display="none";}
-function showApp(){document.getElementById("main-nav").style.display="flex";document.getElementById("home").classList.add("active");}
 
-window.doLogin=async function(){
-  try{await signInWithPopup(auth,provider);}catch(e){alert("Erro ao fazer login. Tente novamente.");}
-}
+window.doLogin=async function(){try{await signInWithPopup(auth,provider);}catch(e){alert("Erro ao fazer login.");}}
 window.doLogout=async function(){
   await signOut(auth);
   document.getElementById("access-denied").style.display="none";
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("main-nav").style.display="none";
-  showLogin();
+  document.getElementById("login-screen").style.display="flex";
 }
 
 onAuthStateChanged(auth,async user=>{
-  if(!user){showLogin();return;}
-  const email=user.email.toLowerCase();
-  if(!ALLOWED_EMAILS.map(e=>e.toLowerCase()).includes(email)){
-    hideLogin();showDenied();return;
+  if(!user){document.getElementById("login-screen").style.display="flex";return;}
+  if(!ALLOWED_EMAILS.map(e=>e.toLowerCase()).includes(user.email.toLowerCase())){
+    document.getElementById("login-screen").style.display="none";
+    document.getElementById("access-denied").style.display="flex";return;
   }
-  hideLogin();
+  document.getElementById("login-screen").style.display="none";
   showLoading();
   document.getElementById("user-email").textContent=user.email;
   await loadAll();
   hideLoading();
-  showApp();
+  document.getElementById("main-nav").style.display="flex";
+  document.getElementById("home").classList.add("active");
 });
 
 async function loadAll(){
@@ -320,45 +320,17 @@ async function loadAll(){
     const snap=await getDocs(collection(db,c));
     DB[c]=snap.docs.map(d=>({...d.data(),_id:d.id}));
   }
-  initHomeMonthSel();
-  renderHome();
+  initHomeMonthSel();renderHome();
 }
-
-async function addDoc2(col,data){
-  const ref=await addDoc(collection(db,col),data);
-  DB[col].push({...data,_id:ref.id});
-  return ref.id;
-}
-async function updateDoc2(col,id,data){
-  await updateDoc(doc(db,col,id),data);
-  const i=DB[col].findIndex(x=>x._id===id);
-  if(i>=0)DB[col][i]={...DB[col][i],...data};
-}
-async function deleteDoc2(col,id){
-  await deleteDoc(doc(db,col,id));
-  DB[col]=DB[col].filter(x=>x._id!==id);
-}
+async function addDoc2(col,data){const ref=await addDoc(collection(db,col),data);DB[col].push({...data,_id:ref.id});return ref.id;}
+async function updateDoc2(col,id,data){await updateDoc(doc(db,col,id),data);const i=DB[col].findIndex(x=>x._id===id);if(i>=0)DB[col][i]={...DB[col][i],...data};}
+async function deleteDoc2(col,id){await deleteDoc(doc(db,col,id));DB[col]=DB[col].filter(x=>x._id!==id);}
 
 function initHomeMonthSel(){
-  const sel=document.getElementById("home-month-sel");
-  if(sel.options.length)return;
-  for(let y=now.getFullYear()-1;y<=now.getFullYear()+1;y++){
-    MONTHS.forEach((m,i)=>{
-      const o=document.createElement("option");
-      o.value=y+"-"+i;o.textContent=m+" "+y;
-      if(i===now.getMonth()&&y===now.getFullYear())o.selected=true;
-      sel.appendChild(o);
-    });
-  }
+  const sel=document.getElementById("home-month-sel");if(sel.options.length)return;
+  for(let y=now.getFullYear()-1;y<=now.getFullYear()+1;y++){MONTHS.forEach((m,i)=>{const o=document.createElement("option");o.value=y+"-"+i;o.textContent=m+" "+y;if(i===now.getMonth()&&y===now.getFullYear())o.selected=true;sel.appendChild(o);});}
 }
-
-window.changeHomeMonth=function(d){
-  homeMonth+=d;
-  if(homeMonth>11){homeMonth=0;homeYear++;}
-  if(homeMonth<0){homeMonth=11;homeYear--;}
-  document.getElementById("home-month-sel").value=homeYear+"-"+homeMonth;
-  renderHome();
-}
+window.changeHomeMonth=function(d){homeMonth+=d;if(homeMonth>11){homeMonth=0;homeYear++;}if(homeMonth<0){homeMonth=11;homeYear--;}document.getElementById("home-month-sel").value=homeYear+"-"+homeMonth;renderHome();}
 
 window.goTo=function(page){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
@@ -371,10 +343,9 @@ window.goTo=function(page){
   if(page==="expenses")renderExpenses();
   if(page==="reports")renderReports();
 }
-window.toggleForm=function(id){
-  const f=document.getElementById(id);f.style.display=f.style.display==="none"?"block":"none";
-}
+window.toggleForm=function(id){const f=document.getElementById(id);f.style.display=f.style.display==="none"?"block":"none";}
 
+// HOME
 function renderHome(){
   const sel=document.getElementById("home-month-sel");
   if(sel.value){const p=sel.value.split("-");homeYear=Number(p[0]);homeMonth=Number(p[1]);}
@@ -395,7 +366,7 @@ function renderHome(){
     ?'<div class="card"><div style="color:#aaa;font-size:14px;text-align:center;padding:4px 0">Sem atendimentos hoje</div></div>'
     :todayA.map(a=>`<div class="appt-card">
       <div class="appt-header"><div class="appt-time">${a.time}</div><div class="appt-patient">${a.patient}</div>${a.confirmed?'<span class="pill green">✓ Realizada</span>':''}</div>
-      <div class="appt-body"><span class="appt-type">${a.type||"Psicoterapia"}${a.mode?" · "+a.mode:""}</span><span class="appt-value">${a.value?fmt(a.value):""}</span></div>
+      <div class="appt-body"><span style="font-size:12px;color:var(--pm)">${a.type||"Psicoterapia"} · ${a.mode||""}</span><span style="font-size:13px;font-weight:600;color:var(--p)">${a.value?fmt(a.value):""}</span></div>
     </div>`).join("");
   const ws=new Date(now);ws.setDate(ws.getDate()-ws.getDay());
   const we=new Date(ws);we.setDate(ws.getDate()+6);
@@ -412,11 +383,35 @@ function renderHome(){
   }).join("");
 }
 
+// PATIENTS — with edit
 window.togglePatientType=function(){
   const t=document.getElementById("p-type").value;
   document.getElementById("p-recorrente-fields").style.display=t==="recorrente"?"block":"none";
   document.getElementById("p-avaliacao-fields").style.display=t==="avaliacao"?"block":"none";
 }
+window.openPatientForm=function(id){
+  document.getElementById("pform").style.display="block";
+  document.getElementById("p-edit-id").value=id||"";
+  if(id){
+    const p=DB.patients.find(x=>x._id===id);if(!p)return;
+    document.getElementById("pform-title").textContent="Editar paciente";
+    document.getElementById("pform-btn").textContent="Salvar alterações";
+    document.getElementById("p-name").value=p.name||"";
+    document.getElementById("p-phone").value=p.phone||"";
+    document.getElementById("p-type").value=p.type||"recorrente";
+    togglePatientType();
+    if(p.type==="avaliacao"){document.getElementById("p-value-av").value=p.value||"";}
+    else{document.getElementById("p-value").value=p.value||"";document.getElementById("p-freq").value=p.freq||4;}
+  } else {
+    document.getElementById("pform-title").textContent="Novo paciente";
+    document.getElementById("pform-btn").textContent="Cadastrar paciente";
+    document.getElementById("p-name").value="";document.getElementById("p-phone").value="";
+    document.getElementById("p-value").value="";document.getElementById("p-value-av").value="";
+    document.getElementById("p-type").value="recorrente";togglePatientType();
+  }
+  document.getElementById("pform").scrollIntoView({behavior:"smooth"});
+}
+window.closePatientForm=function(){document.getElementById("pform").style.display="none";}
 window.savePatient=async function(){
   const name=document.getElementById("p-name").value.trim();
   if(!name){alert("Informe o nome.");return;}
@@ -424,19 +419,17 @@ window.savePatient=async function(){
   const value=type==="avaliacao"?document.getElementById("p-value-av").value:document.getElementById("p-value").value;
   if(!value){alert("Informe o valor.");return;}
   const freq=type==="avaliacao"?1:Number(document.getElementById("p-freq").value);
-  await addDoc2("patients",{name,phone:document.getElementById("p-phone").value,type,value:Number(value),freq,active:true});
-  document.getElementById("p-name").value="";document.getElementById("p-phone").value="";
-  document.getElementById("p-value").value="";document.getElementById("p-value-av").value="";
-  toggleForm("pform");renderPatients();
+  const editId=document.getElementById("p-edit-id").value;
+  const data={name,phone:document.getElementById("p-phone").value,type,value:Number(value),freq};
+  if(editId){
+    await updateDoc2("patients",editId,data);
+  } else {
+    await addDoc2("patients",{...data,active:true});
+  }
+  closePatientForm();renderPatients();
 }
-window.toggleActive=async function(id){
-  const p=DB.patients.find(x=>x._id===id);if(!p)return;
-  await updateDoc2("patients",id,{active:!p.active});renderPatients();
-}
-window.delPatient=async function(id){
-  if(!confirm("Remover paciente?"))return;
-  await deleteDoc2("patients",id);renderPatients();
-}
+window.toggleActive=async function(id){const p=DB.patients.find(x=>x._id===id);if(!p)return;await updateDoc2("patients",id,{active:!p.active});renderPatients();}
+window.delPatient=async function(id){if(!confirm("Remover paciente?"))return;await deleteDoc2("patients",id);renderPatients();}
 function renderPatients(){
   const el=document.getElementById("patients-list");
   if(!DB.patients.length){el.innerHTML='<div style="color:#aaa;text-align:center;padding:32px">Nenhum paciente cadastrado</div>';return;}
@@ -453,6 +446,7 @@ function renderPatients(){
         </div>
       </div>
       <div style="display:flex;gap:4px;flex-shrink:0;flex-direction:column;align-items:flex-end">
+        <button class="btn-edit" onclick="openPatientForm('${p._id}')">✏️ Editar</button>
         <button class="btn-sm" onclick="toggleActive('${p._id}')">${p.active?"Inativar":"Ativar"}</button>
         <button class="btn-sm" style="color:var(--r)" onclick="delPatient('${p._id}')">Remover</button>
       </div>
@@ -460,6 +454,11 @@ function renderPatients(){
   </div>`).join("");
 }
 
+// AGENDA
+window.toggleRoomField=function(){
+  const mode=document.getElementById("a-mode").value;
+  document.getElementById("rent-field").style.display=mode==="Virtual"?"none":"block";
+}
 window.filterPatients=function(){
   const val=document.getElementById("a-patient").value.toLowerCase();
   const matches=DB.patients.filter(p=>p.active&&p.name.toLowerCase().includes(val));
@@ -477,10 +476,15 @@ window.selectPatient=function(name,value,type){
 window.hideAC=function(){setTimeout(()=>{document.getElementById("ac-list").style.display="none"},150)}
 window.changeDay=function(d){dayOffset+=d;renderAgenda();}
 
+function modeColor(mode){
+  if(!mode)return"";
+  if(mode==="Virtual")return"blue";
+  if(mode.includes("POA"))return"orange";
+  return"";
+}
+
 function renderAgenda(){
-  const d=currentDay();
-  const ds=dateStr(d);
-  const isToday=ds===dateStr(now);
+  const d=currentDay();const ds=dateStr(d);const isToday=ds===dateStr(now);
   document.getElementById("day-name").textContent=isToday?"Hoje — "+WDAYS[d.getDay()]:WDAYS[d.getDay()];
   document.getElementById("day-date").textContent=`${d.getDate()} de ${MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
   const appts=DB.appts.filter(a=>a.date===ds);
@@ -497,12 +501,13 @@ function renderAgenda(){
         </div>
         <div class="appt-body">
           <div>
-            <div class="appt-type">${a.type||"Psicoterapia"}</div>
-            ${a.mode?`<div style="margin-top:2px"><span class="pill ${a.mode==="Virtual"?"blue":""}">${a.mode}</span></div>`:""}
+            <div style="font-size:12px;color:var(--pm)">${a.type||"Psicoterapia"}</div>
+            ${a.mode?`<div style="margin-top:2px"><span class="pill ${modeColor(a.mode)}">${a.mode}</span></div>`:""}
+            ${a.rent?`<div style="font-size:11px;color:#e65100;margin-top:2px">Sala: ${fmt(a.rent)}</div>`:""}
             ${a.notes?`<div style="font-size:11px;color:#aaa;margin-top:2px">${a.notes}</div>`:""}
           </div>
           <div style="text-align:right">
-            <div class="appt-value">${a.value?fmt(a.value):""}</div>
+            <div style="font-size:13px;font-weight:600;color:var(--p)">${a.value?fmt(a.value):""}</div>
             <div class="appt-actions" style="margin-top:4px">
               ${!a.confirmed
                 ?`<button class="btn-confirm" onclick="confirmAppt('${a._id}')">✓ Confirmar</button>`
@@ -523,24 +528,25 @@ window.saveAppt=async function(){
   if(!patient||!date||!time){alert("Preencha paciente, data e horário.");return;}
   const pat=DB.patients.find(p=>p.name.toLowerCase()===patient.toLowerCase());
   const value=pat?pat.value:Number(document.getElementById("a-patient").dataset.value||0);
-  await addDoc2("appts",{patient,date,time,type:document.getElementById("a-type").value,mode:document.getElementById("a-mode").value,notes:document.getElementById("a-notes").value,value:Number(value),confirmed:false});
+  const mode=document.getElementById("a-mode").value;
+  const rent=mode!=="Virtual"?Number(document.getElementById("a-rent").value||0):0;
+  await addDoc2("appts",{patient,date,time,type:document.getElementById("a-type").value,mode,notes:document.getElementById("a-notes").value,value:Number(value),rent,confirmed:false});
+  // Auto-add rent as expense
+  if(rent>0){
+    const cat=mode.includes("POA")?"Aluguel de sala POA":"Aluguel de sala NH";
+    await addDoc2("expenses",{desc:`Aluguel sala — ${patient}`,cat,date,value:rent});
+  }
   document.getElementById("a-patient").value="";document.getElementById("a-notes").value="";
-  document.getElementById("a-patient").dataset.value="";
+  document.getElementById("a-rent").value="";document.getElementById("a-patient").dataset.value="";
   toggleForm("aform");renderAgenda();
 }
 window.confirmAppt=async function(id){await updateDoc2("appts",id,{confirmed:true});renderAgenda();}
-window.unconfirmAppt=async function(id){
-  if(!confirm("Desfazer confirmação desta sessão?"))return;
-  await updateDoc2("appts",id,{confirmed:false});renderAgenda();
-}
-window.delAppt=async function(id){
-  if(!confirm("Remover agendamento?"))return;
-  await deleteDoc2("appts",id);renderAgenda();
-}
+window.unconfirmAppt=async function(id){if(!confirm("Desfazer confirmação desta sessão?"))return;await updateDoc2("appts",id,{confirmed:false});renderAgenda();}
+window.delAppt=async function(id){if(!confirm("Remover agendamento?"))return;await deleteDoc2("appts",id);renderAgenda();}
 
+// EXPENSES
 function initFilters(mId,yId){
-  const ms=document.getElementById(mId),ys=document.getElementById(yId);
-  if(ms.options.length)return;
+  const ms=document.getElementById(mId),ys=document.getElementById(yId);if(ms.options.length)return;
   MONTHS.forEach((m,i)=>{const o=document.createElement("option");o.value=i;o.textContent=m;if(i===now.getMonth())o.selected=true;ms.appendChild(o);});
   [now.getFullYear()-1,now.getFullYear(),now.getFullYear()+1].forEach(y=>{const o=document.createElement("option");o.value=y;o.textContent=y;if(y===now.getFullYear())o.selected=true;ys.appendChild(o);});
 }
@@ -550,7 +556,7 @@ function renderExpenses(){
   const y=Number(document.getElementById("e-filter-year").value);
   const filtered=DB.expenses.filter(e=>{const d=new Date(e.date+"T12:00:00");return d.getMonth()===m&&d.getFullYear()===y}).sort((a,b)=>b.date.localeCompare(a.date));
   const total=filtered.reduce((s,e)=>s+Number(e.value),0);
-  const cats=["Aluguel de sala","Material","Supervisão","Curso/formação","Transporte","Outros"];
+  const cats=["Aluguel de sala NH","Aluguel de sala POA","Material","Supervisão","Curso/formação","Transporte","Outros"];
   const byCat=cats.map(c=>({c,t:filtered.filter(e=>e.cat===c).reduce((s,e)=>s+Number(e.value),0)})).filter(x=>x.t>0);
   document.getElementById("exp-summary").innerHTML=`<div style="font-size:12px;color:var(--pm)">Total do período</div>
     <div style="font-size:22px;font-weight:600;color:var(--r)">${fmt(total)}</div>
@@ -573,11 +579,9 @@ window.saveExpense=async function(){
   document.getElementById("e-desc").value="";document.getElementById("e-value").value="";document.getElementById("e-date").value="";
   toggleForm("eform");renderExpenses();
 }
-window.delExpense=async function(id){
-  if(!confirm("Remover despesa?"))return;
-  await deleteDoc2("expenses",id);renderExpenses();
-}
+window.delExpense=async function(id){if(!confirm("Remover despesa?"))return;await deleteDoc2("expenses",id);renderExpenses();}
 
+// REPORTS
 function renderReports(){
   initFilters("r-filter-month","r-filter-year");
   const m=Number(document.getElementById("r-filter-month").value);
@@ -627,5 +631,6 @@ window.toggleReport=function(id){const el=document.getElementById(id);el.style.d
 document.getElementById("a-date").value=dateStr(now);
 document.getElementById("e-date").value=dateStr(now);
 </script>
+
 </body>
 </html>
